@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: ManagerProject
+        psr4_prefix: ManagerProject
+        src_path: app
