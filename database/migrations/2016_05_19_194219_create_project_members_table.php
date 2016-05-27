@@ -15,9 +15,9 @@ class CreateProjectMembersTable extends Migration
         Schema::create('project_members', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('project_id')->unsigned();
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->bigInteger('member_id')->unsigned();
-            $table->foreign('member_id')->references('id')->on('users');
+            $table->foreign('member_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

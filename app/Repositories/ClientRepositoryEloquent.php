@@ -2,11 +2,12 @@
 
 namespace ManagerProject\Repositories;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use ManagerProject\Repositories\ClientRepository;
 use ManagerProject\Entities\Client;
+use ManagerProject\Presenters\ClientPresenter;
+use ManagerProject\Repositories\ClientRepository;
 use ManagerProject\Validators\ClientValidator;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class ClientRepositoryEloquent
@@ -42,5 +43,13 @@ class ClientRepositoryEloquent extends BaseRepository implements ClientRepositor
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    /**
+     * @return ProjectPresenter
+     */
+    public function presenter()
+    {
+        return ClientPresenter::class;
     }
 }

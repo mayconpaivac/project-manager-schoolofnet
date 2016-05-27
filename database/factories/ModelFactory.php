@@ -45,7 +45,7 @@ $factory->define(ManagerProject\Entities\Project::class, function (Faker\Generat
         'progress' => rand(1,100),
         'description' => $faker->sentence,
         'status' => rand(1,3),
-        'due_date' => $faker->date('now'),
+        'due_date' => $faker->date('Y-m-d', 'now'),
     ];
 });
 

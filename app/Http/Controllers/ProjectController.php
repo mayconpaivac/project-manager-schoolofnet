@@ -24,7 +24,7 @@ class ProjectController extends Controller
 
     public function __construct(ProjectRepository $repository, ProjectService $service)
     {
-        $this->middleware('CheckProjectPermission', ['except' => ['index', 'store']]);
+        $this->middleware('CheckProjectPermission', ['except' => ['store']]);
         $this->repository = $repository;
         $this->service  = $service;
     }
@@ -63,12 +63,7 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        $project = $this->repository->find($id);
-        if($project) {
-            return $project;
-        }
-
-        return response()->json(['success' => false], 400);
+        return $this->service->show($id);
     }
 
 
@@ -95,6 +90,6 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        return $this->repository->delete($id);
+        return $this->service->destroy($id);
     }
 }

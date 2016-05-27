@@ -11,6 +11,7 @@ class ClientTransformer extends TransformerAbstract
     public function transform(Client $client)
     {
         return [
+            'id'            => (int) $client->id,
             'name'          => $client->name,
             'cpf_cnpj'      => $client->cpf_cnpj,
             'responsible'   => $client->responsible,
@@ -23,6 +24,7 @@ class ClientTransformer extends TransformerAbstract
             'phone_2'       => $client->phone_2,
             'city'          => $client->city,
             'state'         => $client->state,
+            'obs'           => $client->obs,
         ];
     }
 

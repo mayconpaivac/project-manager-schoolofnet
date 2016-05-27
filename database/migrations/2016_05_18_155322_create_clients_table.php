@@ -25,8 +25,10 @@ class CreateClientsTable extends Migration
 	    	$table->string('complement', 50);
 	    	$table->string('phone_1', 15);
 	    	$table->string('phone_2', 15);
+	    	$table->string('zip_code', 9);
 	    	$table->string('city', 35);
 	    	$table->char('state', 2);
+	    	$table->text('obs');
 
             $table->timestamps();
 		});

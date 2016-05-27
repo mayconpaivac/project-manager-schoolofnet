@@ -24,7 +24,7 @@ class ProjectNoteController extends Controller
 
     public function __construct(ProjectNoteRepository $repository, ProjectNoteService $service)
     {
-        $this->middleware('CheckProjectPermission');
+        $this->middleware('CheckProjectPermission', ['except' => ['store', 'update']]);
         $this->repository = $repository;
         $this->service  = $service;
     }
@@ -63,7 +63,7 @@ class ProjectNoteController extends Controller
      */
     public function show($idProject, $idNote)
     {
-        return $this->repository->findWhere(['project_id' => $idProject, 'id' => $idNote]);
+        return $this->service->show($idProject, $idNote);
     }
 
 
@@ -75,9 +75,9 @@ class ProjectNoteController extends Controller
      *
      * @return Response
      */
-    public function update($idProject, $idNote, Request $request)
+    public function update(Request $request, $idProject, $idNote)
     {
-        return $this->service->update($request->all(), $idNote, $idProject);
+        return $this->service->update($request->all(), $idProject, $idNote);
     }
 
 
@@ -90,6 +90,6 @@ class ProjectNoteController extends Controller
      */
     public function destroy($idProject, $idNote)
     {
-        return $this->repository->delete($idNote);
+        return $this->service->destroy($idProject, $idNote);
     }
 }

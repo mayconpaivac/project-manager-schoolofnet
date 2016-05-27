@@ -7,10 +7,6 @@ use Prettus\Validator\LaravelValidator;
 
 class ClientValidator extends LaravelValidator {
 
-
-   	protected $messages = [
-		    'email.required' => 'E-mail',
-	];
     protected $rules = [
     	'name' 			=> 'required|min:10',
     	'cpf_cnpj' 		=> 'required|unique:clients',
@@ -23,5 +19,18 @@ class ClientValidator extends LaravelValidator {
     	'city'			=> 'required',
     	'state'			=> 'required|min:2|max:2'
    	];
+
+    protected $attributes = [
+        'name'          => 'Nome',
+        'cpf_cnpj'      => 'CPF/CNPJ',
+        'responsible'   => 'Responsável',
+        'email'         => 'E-mail',
+        'address'       => 'Endereço',
+        'neighborhood'  => 'Bairro',
+        'number'        => 'Número',
+        'phone_1'       => 'Telefone',
+        'city'          => 'Cidade',
+        'state'         => 'Estado'
+    ];
 
 }

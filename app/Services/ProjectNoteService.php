@@ -27,26 +27,54 @@ class ProjectNoteService {
 	{
 		try {
 			$this->validator->with($data)->passesOrFail();
-			return $this->repository->create($data);
+			return response()->json([
+				'success' => true,
+				'data'	=> $this->repository->create($data),
+			]);
 		} catch (ValidatorException $e) {
-			return [
-				'error' => true,
-				'message' => $e->getMessageBag()
-			];
+			return response()->json([
+				'success' => false,
+				'message' => $e->getMessageBag(),
+			], 400);
 		}
 	}
 
-	public function update(array $data, $idNote, $idProject)
+	public function update(array $data, $idProject, $idNote)
 	{
 		try {
 			$this->validator->with($data)->passesOrFail();
-			return $this->repository->update($data, $id);
+			return response()->json([
+				'success' => true,
+				'data' => $this->repository->update($data, $idNote),
+			]);
 		} catch (ValidatorException $e) {
-			return [
-				'error' => true,
-				'message' => $e->getMessageBag()
-			];
+			return response()->json([
+				'success' => false,
+				'message' => $e->getMessageBag(),
+			], 400);
 		}
+	}
+
+	public function show($idProject, $idNote)
+	{
+		$data = $this->repository->findWhere(['project_id' => $idProject, 'id' => $idNote]);
+		return response()->json([
+			'data' => $data['data'][0],
+		]);
+	}
+
+	public function destroy($idProject, $idNote)
+	{
+		if($this->repository->delete($idNote)) {
+			return response()->json([
+				'success' => true,
+			]);
+		}
+
+		return response()->json([
+			'success' => false,
+			'message' => 'Erro ao excluir nota.'
+		]);
 	}
 
 }

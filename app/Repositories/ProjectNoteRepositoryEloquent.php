@@ -2,11 +2,12 @@
 
 namespace ManagerProject\Repositories;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use ManagerProject\Repositories\ProjectNoteRepository;
 use ManagerProject\Entities\ProjectNote;
+use ManagerProject\Presenters\ProjectNotePresenter;
+use ManagerProject\Repositories\ProjectNoteRepository;
 use ManagerProject\Validators\ProjectNoteValidator;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class ProjectNoteRepositoryEloquent
@@ -42,5 +43,13 @@ class ProjectNoteRepositoryEloquent extends BaseRepository implements ProjectNot
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    /**
+     * @return ProjectNotePresenter
+     */
+    public function presenter()
+    {
+        return ProjectNotePresenter::class;
     }
 }

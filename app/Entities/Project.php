@@ -17,6 +17,7 @@ class Project extends Model implements Transformable
     	'progress',
     	'status',
     	'due_date',
+        'description',
     ];
 
     public function owner()
@@ -42,13 +43,6 @@ class Project extends Model implements Transformable
     public function members()
     {
         return $this->belongsToMany(User::class, 'project_members', 'project_id', 'member_id');
-    }
-
-    public function setDueDateAttribute($value)
-    {
-        $this->attributes['due_date'] = \Carbon\Carbon::parse($value); 
-        // $date = \Carbon\Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
-        //  = $date;
     }
 
 }

@@ -4,7 +4,6 @@ namespace ManagerProject\Http\Controllers;
 
 use Illuminate\Http\Request;
 use ManagerProject\Http\Controllers\Controller;
-use ManagerProject\Http\Requests;
 use ManagerProject\Repositories\ClientRepository;
 use ManagerProject\Services\ClientService;
 
@@ -78,6 +77,6 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        return $this->repository->delete($id);
+        return $this->service->destroy($id);
     }
 }

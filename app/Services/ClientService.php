@@ -27,25 +27,38 @@ class ClientService {
 	{
 		try {
 			$this->validator->with($data)->passesOrFail();
-			return $this->repository->create($data);
+			return response()->json([
+				'success' => true,
+				'data' => $this->repository->create($data),
+			]);
 		} catch (ValidatorException $e) {
-			return [
-				'error' => true,
-				'message' => $e->getMessageBag()
-			];
+			return response()->json([
+				'success' => false,
+				'message' => $e->getMessageBag(),
+			], 400);
 		}
 	}
 
 	public function update(array $data, $id)
 	{
 		try {
-			$this->validator->with($data)->passesOrFail();
-			return $this->repository->update($data, $id);
+			$this->validator->with($data)->setId($id)->passes();
+			return response()->json([
+				'success' => true,
+				'data' => $this->repository->update($data, $id),
+			]);
 		} catch (ValidatorException $e) {
-			return [
-				'error' => true,
-				'message' => $e->getMessageBag()
-			];
+			return response()->json([
+				'success' => false,
+				'message' => $e->getMessageBag(),
+			], 400);
+		}
+	}
+
+	public function destroy($id)
+	{
+		if($this->repository->delete($id)) {
+			return response()->json(['success' => true]);
 		}
 	}
 

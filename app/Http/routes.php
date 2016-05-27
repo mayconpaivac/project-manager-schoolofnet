@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/', function() {
+	return view('app');
+});
+
 Route::group(['prefix' => 'api'], function() {
 
 	Route::post('oauth/access_token', function() {
@@ -18,14 +22,15 @@ Route::group(['prefix' => 'api'], function() {
 	});
 
 	Route::group(['middleware' => 'oauth'], function() {
-		Route::resource('client', 'ClientController', ['except' => ['create', 'edit']]);
+		Route::resource('clients', 'ClientController', ['except' => ['create', 'edit']]);
 
-		Route::resource('project', 'ProjectController', ['except' => ['create', 'edit']]);
+		Route::resource('projects', 'ProjectController', ['except' => ['create', 'edit']]);
 
-		Route::resource('project/{id}/note', 'ProjectNoteController', ['except' => ['create', 'update']]);
+		Route::resource('projects/{id}/notes', 'ProjectNoteController', ['except' => ['create', 'edit']]);
 
-		Route::post('project/{id}/file', 'ProjectFileController@store');
+		Route::post('projects/{id}/files', 'ProjectFileController@store');
 
+		Route::get('user/authenticated', 'UserController@getAuthenticated');
 	});
 
 	

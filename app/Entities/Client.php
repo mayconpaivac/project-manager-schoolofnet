@@ -22,7 +22,8 @@ class Client extends Model implements Transformable
     	'phone_1',
     	'phone_2',
     	'city',
-    	'state'
+        'state',
+    	'obs',
     ];
 
 }

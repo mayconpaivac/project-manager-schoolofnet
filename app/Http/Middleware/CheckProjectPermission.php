@@ -29,9 +29,14 @@ class CheckProjectPermission
     public function handle($request, Closure $next)
     {
         $userId = \Authorizer::getResourceOwnerId();
-        $projectId = $request->project ? $request->project : $request->id;
 
-        if($this->repository->isOwner($projectId, $userId) or $this->repository->isMember($projectId, $userId)) {
+        $projectId = $request->projects ? $request->projects : $request->id;
+
+        if($projectId) {
+            if($this->repository->isOwner($projectId, $userId) or $this->repository->isMember($projectId, $userId)) {
+                return $next($request);
+            }
+        } else {
             return $next($request);
         }
 
