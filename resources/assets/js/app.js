@@ -1,21 +1,44 @@
 (function() {
 	'use strict';
 
-	var app = angular.module('ManagerApp', ['ngRoute', 'angular-oauth2', 'ngMessages', 'ManagerApp.controllers', 'ManagerApp.services', 'ManagerApp.filters']);
+	var app = angular.module('ManagerApp', [
+            'ngRoute',
+            'angular-oauth2', 
+            'ngMessages',
+            'ManagerApp.controllers', 
+            'ManagerApp.factories', 
+            'ManagerApp.services', 
+            'ManagerApp.filters', 
+            'ManagerApp.directives', 
+            'ui.bootstrap',
+            'ngFileUpload',
+        ]);
 
 	angular.module('ManagerApp.controllers', ['ngMessages', 'angular-oauth2']);
+	angular.module('ManagerApp.factories', ['ngMessages', 'angular-oauth2']);
 	angular.module('ManagerApp.services', ['ngResource']);
 	angular.module('ManagerApp.filters', []);
+	angular.module('ManagerApp.directives', []);
 
 	app.provider('appConfig', ['$httpParamSerializerProvider', function($httpParamSerializerProvider) {
 		var config = {
 			URL_API: 'http://project.dev/api/',
+			URL_BASE: 'http://project.dev/',
 			project: {
 				status: [
 					{value: 1, label: 'Não iniciado'},
 					{value: 2, label: 'Iniciado'},
 					{value: 3, label: 'Concluído'},
+				],
+			},
+			projectTask: {
+				status: [
+					{value: 1, label: 'Incompleta'},
+					{value: 2, label: 'Completa'},
 				]
+			},
+			urls: {
+				projectFile: 'projects/{{id}}/files/{{idFile}}',
 			},
 			utils: {
 				transformRequest: function(data) {
@@ -44,6 +67,50 @@
 			}
 		};
 	}]);
+
+
+
+
+
+    angular.module('ManagerApp.factories')
+    .factory('redirectWhenLoggedOut', ['$q', '$location', '$cookies', '$rootScope',
+    	function ($q, $location, $cookies, $rootScope) {
+        return {
+            'responseError': function (rejection) {
+                if (rejection.status == 403) {
+                    return;
+                }
+
+                if(rejection.data.error == 'access_denied' && rejection.status == 401) {
+                	//OAuth.getRefreshToken();
+                }
+
+                var rejectionReasons = ['token_invalid'];
+
+                angular.forEach(rejectionReasons, function(value, key) {
+
+                    if(rejection.data.error === value) {
+                        $location.path('/auth/login');
+                        $rootScope.currentUser = null;
+
+                        $cookies.remove('token');
+                        $cookies.remove('currentUser');
+
+                        window.console.log(value);
+                    }
+                });
+                return $q.reject(rejection);
+            }
+        };
+    }]);
+	app.config(function ($httpProvider) {
+        $httpProvider.interceptors.push('redirectWhenLoggedOut');
+    });
+
+
+
+
+
 
 	//Routes
 	app.config(['$routeProvider', '$httpProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfigProvider', function($routeProvider, $httpProvider, OAuthProvider, OAuthTokenProvider, appConfigProvider) {
@@ -136,6 +203,58 @@
 		})
 		/*
 		 * End Route projects Notes
+		 */
+		/*
+		 * Route projects Files
+		 */
+		.when('/projects/:id/files', {
+			templateUrl: 'build/views/project-file/index.html',
+			controller: 'ProjectFileIndexController'
+		})
+		.when('/projects/:id/files/create', {
+			templateUrl: 'build/views/project-file/create.html',
+			controller: 'ProjectFileCreateController'
+		})
+		.when('/projects/:id/files/:idFile', {
+			templateUrl: 'build/views/project-file/show.html',
+			controller: 'ProjectFileShowController'
+		})
+		.when('/projects/:id/files/:idFile/edit', {
+			templateUrl: 'build/views/project-file/edit.html',
+			controller: 'ProjectFileEditController'
+		})
+		.when('/projects/:id/files/:idFile/destroy', {
+			templateUrl: 'build/views/project-file/destroy.html',
+			controller: 'ProjectFileDestroyController'
+		})
+		/*
+		 * End Route projects Files
+		 */
+		/*
+		 * Route projects Tasks
+		 */
+		.when('/projects/:id/tasks', {
+			templateUrl: 'build/views/project-task/index.html',
+			controller: 'ProjectTaskIndexController'
+		})
+		.when('/projects/:id/tasks/create', {
+			templateUrl: 'build/views/project-task/create.html',
+			controller: 'ProjectTaskCreateController'
+		})
+		.when('/projects/:id/tasks/:idTask', {
+			templateUrl: 'build/views/project-task/show.html',
+			controller: 'ProjectTaskhowController'
+		})
+		.when('/projects/:id/tasks/:idTask/edit', {
+			templateUrl: 'build/views/project-task/edit.html',
+			controller: 'ProjectTaskEditController'
+		})
+		.when('/projects/:id/tasks/:idTask/destroy', {
+			templateUrl: 'build/views/project-task/destroy.html',
+			controller: 'ProjectTaskDestroyController'
+		})
+		/*
+		 * End Route projects Files
 		 */
 		/*
 		 * Route login oauth

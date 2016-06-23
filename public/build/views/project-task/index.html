@@ -1,0 +1,48 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-default">
+				<div class="panel-heading">Listar tarefas de projetos</div>
+				<div class="panel-body">
+					<div class="col-md-12 pull-right">
+						<form class="pull-right form-inline" name="form" ng-submit="store()">
+							<input type="text" class="form-control" name="title" id="title" ng-model="projectTask.title" required>
+							<button type="submit" class="btn btn-primary">Adicionar</button>
+						</form>
+					</div>
+					<table class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th>Título</th>
+								<th>Data Início</th>
+								<th>Data Término</th>
+								<th>Status</th>
+								<th>Ações</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="projectTask in projectTasks">
+								<td>{{ projectTask.title }}</td>
+								<td>{{ projectTask.start_date | dateBr }}</td>
+								<td>{{ projectTask.due_date | dateBr }}</td>
+								<td>{{ projectTask.status }}</td>
+								<td>
+									<a ng-href="#/projects/{{ projectTask.project_id }}/tasks/{{ projectTask.id }}/edit" class="btn-sm btn btn-primary">Editar</a>
+									<a ng-href="#/projects/{{ projectTask.project_id }}/tasks/{{ projectTask.id }}/destroy" class="btn-sm btn btn-danger">Excluir</a>
+								</td>
+							</tr>
+							<tr ng-show="projectTasks.length == 0">
+								<td colspan="5">
+									<div class="alert alert-info">
+										Nenhuma tarefa encontrada.
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<a ng-href="#/projects/{{ project_id }}/tasks/create" class="btn btn-primary">Adicionar</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

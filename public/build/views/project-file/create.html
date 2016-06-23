@@ -1,0 +1,66 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-default">
+				<div class="panel-heading">Upload de arquivo para projeto</div>
+				<div class="panel-body">
+					
+					<div class="alert alert-danger" ng-show="error.error">
+						<strong>Erro</strong>
+						<li>{{ error.message }}</li>
+					</div>
+
+					<form name="form" class="form-horizontal" role="form" ng-submit="store()">
+						
+						<div class="form-group" ng-class="{'has-error': !form.name.$valid && form.name.$touched}">
+							<label class="col-md-4 control-label">Título</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" ng-model="projectFile.name" name="name" required>
+								<div ng-messages="form.name.$error" ng-show="form.name.$touched" class="help-block">
+									<div ng-message="required">Campo obrigatório.</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group" ng-class="{'has-error': !form.name.$valid && form.name.$touched}">
+							<label class="col-md-4 control-label">Arquivo</label>
+							<div class="col-md-6">
+								
+								<div class="btn btn-default" ngf-select ng-model="projectFile.file" name="file" ngf-pattern="'*.jpg,*.png,*.jpeg,*.gif,*.xls,*.xlsx,*.doc,*.docx,*.zip'" ngf-accept="'*.jpg,*.png,*.jpeg,*.gif,*.xls,*.xlsx,*.doc,*.docx,*.zip'" ngf-max-size="2000MB" ngf-min-height="100" ngf-resize="{width: 100, height: 100}">Selecionar arquivo</div> {{ projectFile.file.name }} 
+
+								<br ng-show="projectFile.fileProgressbar != 0 && projectFile.fileProgressbar != 100"><br ng-show="projectFile.fileProgressbar != 0 && projectFile.fileProgressbar != 100">
+								<div class="progress" ng-show="projectFile.fileProgressbar != 0 && projectFile.fileProgressbar != 100">
+								  <div class="progress-bar progress-bar-striped"  role="progressbar" aria-valuenow="{{ projectFile.fileProgressbar }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: {{ projectFile.fileProgressbar }}%">
+								    {{ projectFile.fileProgressbar }}%
+								  </div>
+								</div>
+
+								<div ng-messages="form.file.$error" ng-show="form.file.$touched" class="help-block">
+									<div ng-message="required">Campo obrigatório.</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group" ng-class="{'has-error': !form.description.$valid && form.description.$touched}">
+							<label class="col-md-4 control-label">Descrição</label>
+							<div class="col-md-6">
+								<textarea type="text" class="form-control" ng-model="projectFile.description" name="description" required></textarea>
+								<div ng-messages="form.description.$error" ng-show="form.description.$touched" class="help-block">
+									<div ng-message="required">Campo obrigatório.</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-6 col-md-offset-4">
+								<button type="submit" class="btn btn-primary">Cadastrar</button>
+								<a ng-href="#/projects/{{ projectFile.project_id }}/files" class="btn btn-default">Voltar</a>
+							</div>
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

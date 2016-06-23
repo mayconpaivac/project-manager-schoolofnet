@@ -26,6 +26,13 @@
 									<a ng-href="#/clients/{{ client.id }}/destroy" class="btn-sm btn btn-danger">Excluir</a>
 								</td>
 							</tr>
+							<tr ng-show="clients.length == 0">
+								<td colspan="5">
+									<div class="alert alert-info">
+										Nenhum cliente encontrado.
+									</div>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 					<a href="#/clients/create" class="btn btn-primary">Adicionar</a>

@@ -28,6 +28,13 @@
 									<a ng-href="#/projects/{{ project.id }}/destroy" class="btn-sm btn btn-danger">Excluir</a>
 								</td>
 							</tr>
+							<tr ng-show="projects.length == 0">
+								<td colspan="6">
+									<div class="alert alert-info">
+										Nenhum projeto encontrado.
+									</div>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 					<a ng-href="#/projects/create" class="btn btn-primary">Adicionar</a>

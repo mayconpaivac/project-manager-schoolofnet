@@ -17,12 +17,20 @@ class ProjectService {
 	 */
 	protected $validator;
 
+	/**
+	 * @param ProjectRepository $repository
+	 * @param ProjectValidator $validator
+	 */
 	public function __construct(ProjectRepository $repository, ProjectValidator $validator)
 	{
 		$this->repository = $repository;
 		$this->validator = $validator;
 	}
 
+	/**
+	 * @param  array $data
+	 * @return array
+	 */
 	public function create(array $data)
 	{
 		try {
@@ -44,16 +52,28 @@ class ProjectService {
 		}
 	}
 
+	/**
+	 * @param  int $id
+	 * @return return array
+	 */
 	public function show($id)
 	{
 		try {
 			$show = $this->repository->find($id);
 			return $show;
 		} catch (Exception $e) {
-			return 'no';
+			return response()->json([
+				'success' => false,
+				'message' => $e->getMessageBag(),
+			], 400);
 		}
 	}
 
+	/**
+	 * @param  array $data
+	 * @param  int $id
+	 * @return array
+	 */
 	public function update(array $data, $id)
 	{
 		try {
@@ -71,6 +91,10 @@ class ProjectService {
 		}
 	}
 
+	/**
+	 * @param  int $id
+	 * @return array
+	 */
 	public function destroy($id)
 	{
 		if($this->repository->delete($id)) {
@@ -85,5 +109,48 @@ class ProjectService {
 			'message' => 'Erro ao excluir projeto',
 		]);
 	}
+
+	/**
+	 * @param  int $projectId
+	 * @return boolean
+	 */
+	public function checkProjectPermissions($projectId)
+    {
+        if($this->checkProjectOwner($projectId) or $this->checkProjectMember($projectId)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param  int $projectId
+     * @return boolean
+     */
+    public function checkProjectOwner($projectId)
+    {
+        $userId = \Authorizer::getResourceOwnerId();
+        if($this->repository->skipPresenter()->findWhere(['id' => $projectId, 'owner_id' => $userId])->count()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param  int $projectId
+     * @return boolean
+     */
+    public function checkProjectMember($projectId)
+    {
+        $userId = \Authorizer::getResourceOwnerId();
+        $project = $this->repository->skipPresenter()->find($projectId, ['id']);
+
+        foreach ($project->members as $member) {
+            if($member->id == $userId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 }

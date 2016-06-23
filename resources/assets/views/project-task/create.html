@@ -1,0 +1,29 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-default">
+				<div class="panel-heading">Cadastro de tarefa</div>
+				<div class="panel-body">
+					
+					<div class="alert alert-danger" ng-show="error.error">
+						<strong>Erro</strong>
+						<li>{{ error.message }}</li>
+					</div>
+
+					<form name="form" class="form-horizontal" role="form" ng-submit="store()">
+						
+						<ng-include src="appConfig.config.URL_BASE + 'build/views/project-task/form.html'"></ng-include>
+
+						<div class="form-group">
+							<div class="col-md-6 col-md-offset-4">
+								<button type="submit" class="btn btn-primary">Cadastrar</button>
+								<a ng-href="#/projects/{{ projectTask.project_id }}/notes" class="btn btn-default">Voltar</a>
+							</div>
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

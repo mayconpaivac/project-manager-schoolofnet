@@ -3,21 +3,21 @@
 namespace ManagerProject\Http\Middleware;
 
 use Closure;
-use ManagerProject\Repositories\ProjectRepository;
+use ManagerProject\Services\ProjectService;
 
 class CheckProjectPermission
 {
     /**
-     * @var ProjectRepository
+     * @var ProjectService
      */
-    private $repository;
+    private $service;
 
     /**
-     * @param ProjectRepository $repository
+     * @param ProjectService $service
      */
-    public function __construct(ProjectRepository $repository)
+    public function __construct(ProjectService $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
     /**
      * Handle an incoming request.
@@ -28,12 +28,9 @@ class CheckProjectPermission
      */
     public function handle($request, Closure $next)
     {
-        $userId = \Authorizer::getResourceOwnerId();
-
-        $projectId = $request->projects ? $request->projects : $request->id;
-
+        $projectId = $request->route('id') ? $request->route('id') : $request->route('projects');
         if($projectId) {
-            if($this->repository->isOwner($projectId, $userId) or $this->repository->isMember($projectId, $userId)) {
+            if($this->service->checkProjectPermissions($projectId)) {
                 return $next($request);
             }
         } else {

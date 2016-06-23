@@ -73,11 +73,12 @@
 		<script src="{{ asset('build/js/vendor/angular-resource.min.js') }}"></script>
 		<script src="{{ asset('build/js/vendor/angular-animate.min.js') }}"></script>
 		<script src="{{ asset('build/js/vendor/angular-messages.min.js') }}"></script>
-		<script src="{{ asset('build/js/vendor/ui-bootstrap.min.js') }}"></script>
+		<script src="{{ asset('build/js/vendor/ui-bootstrap-tpls.min.js') }}"></script>
 		<script src="{{ asset('build/js/vendor/navbar.min.js') }}"></script>
 		<script src="{{ asset('build/js/vendor/angular-cookies.min.js') }}"></script>
 		<script src="{{ asset('build/js/vendor/query-string.js') }}"></script>
 		<script src="{{ asset('build/js/vendor/angular-oauth2.min.js') }}"></script>
+		<script src="{{ asset('build/js/vendor/ng-file-upload.min.js') }}"></script>
 
 		<script src="{{ asset('build/js/app.js') }}"></script>
 		<!-- Controllers -->
@@ -94,21 +95,39 @@
 		<script src="{{ asset('build/js/controllers/project-note/ProjectNoteEditController.js') }}"></script>
 		<script src="{{ asset('build/js/controllers/project-note/ProjectNoteDestroyController.js') }}"></script>
 		<script src="{{ asset('build/js/controllers/project-note/ProjectNoteShowController.js') }}"></script>
+		<!-- Project File Controllers -->
+		<script src="{{ asset('build/js/controllers/project-file/ProjectFileIndexController.js') }}"></script>
+		<script src="{{ asset('build/js/controllers/project-file/ProjectFileCreateController.js') }}"></script>
+		<script src="{{ asset('build/js/controllers/project-file/ProjectFileEditController.js') }}"></script>
+		<script src="{{ asset('build/js/controllers/project-file/ProjectFileDestroyController.js') }}"></script>
+		<script src="{{ asset('build/js/controllers/project-file/ProjectFileShowController.js') }}"></script>
 		<!-- Project Controllers -->
 		<script src="{{ asset('build/js/controllers/project/ProjectIndexController.js') }}"></script>
 		<script src="{{ asset('build/js/controllers/project/ProjectCreateController.js') }}"></script>
 		<script src="{{ asset('build/js/controllers/project/ProjectEditController.js') }}"></script>
 		<script src="{{ asset('build/js/controllers/project/ProjectDestroyController.js') }}"></script>
 		<script src="{{ asset('build/js/controllers/project/ProjectShowController.js') }}"></script>
+		<!-- Project Tasks Controllers -->
+		<script src="{{ asset('build/js/controllers/project-task/ProjectTaskIndexController.js') }}"></script>
+		<script src="{{ asset('build/js/controllers/project-task/ProjectTaskCreateController.js') }}"></script>
+		<script src="{{ asset('build/js/controllers/project-task/ProjectTaskEditController.js') }}"></script>
+		<script src="{{ asset('build/js/controllers/project-task/ProjectTaskDestroyController.js') }}"></script>
+		<script src="{{ asset('build/js/controllers/project-task/ProjectTaskShowController.js') }}"></script>
 
 		<!-- Services -->
+		<script src="{{ asset('build/js/services/urlService.js') }}"></script>
 		<script src="{{ asset('build/js/services/clientService.js') }}"></script>
 		<script src="{{ asset('build/js/services/projectNoteService.js') }}"></script>
+		<script src="{{ asset('build/js/services/projectTaskService.js') }}"></script>
+		<script src="{{ asset('build/js/services/projectFileService.js') }}"></script>
 		<script src="{{ asset('build/js/services/projectService.js') }}"></script>
 		<script src="{{ asset('build/js/services/userService.js') }}"></script>
 
 		<!-- Filters -->
 		<script src="{{ asset('build/js/filters/date-br.js') }}"></script>
+
+		<!-- Directives -->
+		<script src="{{ asset('build/js/directives/projectFileDownloadDirective.js') }}"></script>
 	@else
 		<script src="{{ elixir('js/all.js') }}"></script>
 	@endif

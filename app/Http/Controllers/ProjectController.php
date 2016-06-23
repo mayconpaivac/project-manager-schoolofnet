@@ -24,9 +24,10 @@ class ProjectController extends Controller
 
     public function __construct(ProjectRepository $repository, ProjectService $service)
     {
-        $this->middleware('CheckProjectPermission', ['except' => ['store']]);
         $this->repository = $repository;
         $this->service  = $service;
+        $this->middleware('check-project-owner', ['except' => ['index', 'store', 'show']]);
+        $this->middleware('check-project-permission', ['except' => ['index', 'store', 'update', 'destroy']]);
     }
 
 
@@ -37,7 +38,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return $this->repository->all();
+        return $this->repository->findWithOwnerAndMember(\Authorizer::getResourceOwnerId());
     }
 
 

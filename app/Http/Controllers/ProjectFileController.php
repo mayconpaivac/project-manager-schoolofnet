@@ -6,15 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use ManagerProject\Http\Requests;
-use ManagerProject\Repositories\ProjectRepository;
-use ManagerProject\Services\ProjectService;
+use ManagerProject\Repositories\ProjectFileRepository;
+use ManagerProject\Services\ProjectFileService;
 
 
 class ProjectFileController extends Controller
 {
 
     /**
-     * @var ProjectRepository
+     * @var ProjectFileRepository
      */
     protected $repository;
 
@@ -23,10 +23,12 @@ class ProjectFileController extends Controller
      */
     protected $service;
 
-
-    public function __construct(ProjectRepository $repository, ProjectService $service)
+    /**
+     * @param ProjectFileRepository $repository 
+     * @param ProjectFileService    $service    
+     */
+    public function __construct(ProjectFileRepository $repository, ProjectFileService $service)
     {
-        $this->middleware('CheckProjectPermission', ['except' => ['index', 'store']]);
         $this->repository = $repository;
         $this->service  = $service;
     }
@@ -37,9 +39,20 @@ class ProjectFileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($idProject)
     {
-        return $this->repository->all();
+        return $this->repository->findWhere(['project_id' => $idProject]);
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function download($idProject, $idFile)
+    {
+        return $this->service->getFilePath($idFile);
     }
 
 
@@ -50,12 +63,18 @@ class ProjectFileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $idProject)
     {
         $file = $request->file('file');
         $extension = $file->getClientOriginalExtension();
 
-        Storage::put($request->name . '.' . $extension, File::get($file));
+        $data['file'] = $file;
+        $data['extension'] = $extension;
+        $data['name'] = $request->name;
+        $data['project_id'] = $request->project_id;
+        $data['description'] = $request->description;
+
+        return $this->service->create($data);
     }
 
 
@@ -66,14 +85,14 @@ class ProjectFileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($idProject, $idFile)
     {
-        $project = $this->repository->find($id);
-        if($project) {
-            return $project;
+        $projectFile = $this->repository->find($idFile);
+        if($projectFile) {
+            return $projectFile;
         }
 
-        return response()->json(['success' => false], 400);
+        return response()->json(['success' => false, 'message' => 'not_found'], 400);
     }
 
 
@@ -85,9 +104,9 @@ class ProjectFileController extends Controller
      *
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $idProject, $idFile)
     {
-        return $this->service->update($request->all(), $id);
+        return $this->service->update($request->all(), $idProject, $idFile);
     }
 
 
@@ -98,8 +117,8 @@ class ProjectFileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($idProject, $idFile)
     {
-        return $this->repository->delete($id);
+        return $this->service->destroy($idProject, $idFile);
     }
 }

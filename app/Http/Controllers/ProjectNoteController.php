@@ -24,7 +24,6 @@ class ProjectNoteController extends Controller
 
     public function __construct(ProjectNoteRepository $repository, ProjectNoteService $service)
     {
-        $this->middleware('CheckProjectPermission', ['except' => ['store', 'update']]);
         $this->repository = $repository;
         $this->service  = $service;
     }
